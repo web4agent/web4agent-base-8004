@@ -1,0 +1,16 @@
+{
+  "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
+  "name": "Your Agent Name",
+  "description": "Short description of what your agent does.",
+  "image": "https://gateway.irys.xyz/your-agent-avatar",
+  "active": true,
+  "x402Support": false,
+  "services": [
+    {
+      "name": "MCP",
+      "endpoint": "https://your-agent.example.com/mcp",
+      "version": "0.1.0"
+    }
+  ],
+  "supportedTrust": ["reputation", "crypto-economic", "tee-attestation"]
+}
