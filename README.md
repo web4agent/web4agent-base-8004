@@ -18,6 +18,7 @@ It does **not** depend on agent0 SDK or Pinata. It talks directly to the Identit
   - encodes it as a base64 data URI
   - calls `register(agentURI)` on the Base Identity Registry
   - parses the ERC-721 `Transfer` event and prints the `agentId` + 8004scan URL.
+- `scripts/upload_irys_image.mjs` – helper to upload an avatar image to [Irys](https://irys.xyz) and get a permanent HTTPS URL.
 
 Contract (Base mainnet):
 
@@ -30,7 +31,7 @@ Contract (Base mainnet):
 ### 1. Install deps
 
 ```bash
-npm install viem dotenv
+npm install viem dotenv @irys/sdk
 ```
 
 ### 2. Configure your wallet
@@ -44,7 +45,26 @@ AGENT_PRIVATE_KEY=0x...your_base_private_key...
 - This key must control a wallet with a little ETH on Base (gas).
 - This wallet becomes the **owner** of the ERC-8004 agent NFT.
 
-### 3. Create your registration file
+### 3. (Optional) Upload your avatar to Irys
+
+如果你还没有托管头像，可以用自带脚本把本地图片上传到 Irys，拿一个永久的 HTTPS 链接：
+
+```bash
+node scripts/upload_irys_image.mjs /path/to/avatar.jpg
+```
+
+输出会类似：
+
+```text
+📤 Uploading to Irys: /path/to/avatar.jpg
+✅ Irys upload success
+   TX ID: DgwoTc5W...
+   URL  : https://gateway.irys.xyz/DgwoTc5W...
+```
+
+把这个 URL 填到后面的 `registration.json.image` 字段里即可。
+
+### 4. Create your registration file
 
 Copy the template:
 
@@ -56,7 +76,7 @@ Edit `registration.json`:
 
 - `name` – Agent name (e.g. `"Rack"`).
 - `description` – What the agent does.
-- `image` – HTTPS URL for the avatar (Irys gateway URL is fine).
+- `image` – HTTPS URL for the avatar（推荐用上一步 Irys 生成的 gateway URL）。
 - `services` – Declare MCP/A2A endpoints, e.g.
   ```json
   {
@@ -82,7 +102,7 @@ The structure must follow:
 }
 ```
 
-### 4. Register on Base
+### 5. Register on Base
 
 ```bash
 node scripts/register_8004_base.mjs
